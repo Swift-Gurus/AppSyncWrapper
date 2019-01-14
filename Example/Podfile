@@ -1,0 +1,9 @@
+use_frameworks!
+
+target 'AppSyncWrapper_Example' do
+  pod 'AppSyncWrapper', :path => '../'
+
+  target 'AppSyncWrapper_Tests' do
+    inherit! :search_paths
+  end
+end
