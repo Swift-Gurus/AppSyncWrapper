@@ -1,0 +1,6 @@
+framework module AppSyncWrapper {
+  umbrella header "AppSyncWrapper-umbrella.h"
+
+  export *
+  module * { export * }
+}

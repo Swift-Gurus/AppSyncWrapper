@@ -1,0 +1,6 @@
+framework module Pods_AppSyncWrapper_Tests {
+  umbrella header "Pods-AppSyncWrapper_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
