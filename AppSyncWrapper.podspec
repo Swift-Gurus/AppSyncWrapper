@@ -32,6 +32,6 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'AppSyncWrapper/Classes/**/*'
   
-  s.dependency 'AWSAppSync', '~> 2.6.24'
+  s.dependency 'AWSAppSync'
   s.dependency 'EitherResult'
 end
