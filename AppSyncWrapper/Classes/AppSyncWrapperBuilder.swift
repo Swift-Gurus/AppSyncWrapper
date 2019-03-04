@@ -22,7 +22,7 @@ public final class AppSyncWrapperBuilder {
     public var tokenReader: LatestTokenReader!
     public var region: AWSRegionType = .APNortheast1
     public var url: URL!
-    public var headerInfos = Dictionary<String, String>()
+    public var headerInfos: [String:String] = [:]
     public var cachePolicy: CachePolicy = .fetchIgnoringCacheData
     public var processQueue: DispatchQueue = .main
     
