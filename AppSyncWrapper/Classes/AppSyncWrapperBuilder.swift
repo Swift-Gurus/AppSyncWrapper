@@ -22,6 +22,7 @@ public final class AppSyncWrapperBuilder {
     public var tokenReader: LatestTokenReader!
     public var region: AWSRegionType = .APNortheast1
     public var url: URL!
+    public var headerInfos: [String:String] = [:]
     public var cachePolicy: CachePolicy = .fetchIgnoringCacheData
     public var processQueue: DispatchQueue = .main
     
@@ -48,10 +49,17 @@ public final class AppSyncWrapperBuilder {
             let bridge = AWSCognitoUserPoolsAuthProviderBridge(latestTokenReader: try getLatestTokenReader())
             return try AWSAppSyncClientConfiguration(url: url,
                                                      serviceRegion: region,
-                                                     userPoolsAuthProvider: bridge)
+                                                     userPoolsAuthProvider: bridge,
+                                                     urlSessionConfiguration: getUrlSessionConfig())
         } catch {
             throw error
         }
+    }
+    
+    private func getUrlSessionConfig() -> URLSessionConfiguration {
+        let urlSessionConfiguration = URLSessionConfiguration.default
+        urlSessionConfiguration.httpAdditionalHeaders = headerInfos
+        return urlSessionConfiguration
     }
     
     
