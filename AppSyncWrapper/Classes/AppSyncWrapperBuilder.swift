@@ -50,7 +50,7 @@ public final class AppSyncWrapperBuilder {
             return try AWSAppSyncClientConfiguration(url: url,
                                                      serviceRegion: region,
                                                      userPoolsAuthProvider: bridge,
-                                                     urlSessionConfiguration:getUrlSessionConfig())
+                                                     urlSessionConfiguration: getUrlSessionConfig())
         } catch {
             throw error
         }
