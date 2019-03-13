@@ -16,14 +16,14 @@ public protocol GraphQLInitializable {
 }
 
 protocol ResultConverter {
-    func convert<Q: GraphQLQuery, T: GraphQLInitializable>(response: GraphQLResult<Q.Data>,
-                                                           ofQuery query: Q) -> ALResult<T> where Q.Data == T.Set
+    func convert<O: GraphQLOperation, T: GraphQLInitializable>(response: GraphQLResult<O.Data>,
+                                                           ofOperation operation: O) -> ALResult<T> where O.Data == T.Set
 }
 
 final class GraphQLResultConverter: ResultConverter {
     
-    func convert<Q: GraphQLQuery, T: GraphQLInitializable>(response: GraphQLResult<Q.Data>,
-                                                           ofQuery query: Q) -> ALResult<T> where Q.Data == T.Set {
+    func convert<O: GraphQLOperation, T: GraphQLInitializable>(response: GraphQLResult<O.Data>,
+                                                           ofOperation operation: O) -> ALResult<T> where O.Data == T.Set {
         guard let data = response.data else { return .wrong(AppSyncWrapperError.nullObject) }
         return ALResult(data).map(T.init)
     }
