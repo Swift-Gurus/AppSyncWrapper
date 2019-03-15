@@ -21,13 +21,15 @@ struct AppSyncWrapperConfig {
     var appsyncClient: AWSAppSyncClient
 }
 
-
-
 public protocol GraphQLQuerySender {
     func sendQuery<Q: GraphQLQuery, T: GraphQLInitializable>(_ query: Q, completion: @escaping (ALResult<T>) -> Void) where Q.Data == T.Set
 }
 
-final class AppSyncWrapper: GraphQLQuerySender {
+public protocol GraphQLMutationPerformer {
+    func performMutation<M: GraphQLMutation, T: GraphQLInitializable>(_ mutation: M, completion: @escaping (ALResult<T>) -> Void) where M.Data == T.Set
+}
+
+final class AppSyncWrapper: GraphQLQuerySender, GraphQLMutationPerformer {
     
     let cachePolicy: CachePolicy
     let appsyncClient: AWSAppSyncClient
@@ -51,6 +53,16 @@ final class AppSyncWrapper: GraphQLQuerySender {
       
         }
     }
-
+    
+    func performMutation<M, T>(_ mutation: M, completion: @escaping (ALResult<T>) -> Void) where M : GraphQLMutation, T : GraphQLInitializable, M.Data == T.Set {
+        appsyncClient.perform(mutation: mutation,
+                              queue: processQueue,
+                              optimisticUpdate: nil,
+                              conflictResolutionBlock: nil) {[weak self] (response, error) in
+                                guard let `self` = self else { return }
+                                let result = ALResult(value: response, error: error)
+                                result.flatMap({ self.resultConverter.convert(response: $0, ofOperation: mutation)}) » completion
+                                
+        }
+    }
 }
-
