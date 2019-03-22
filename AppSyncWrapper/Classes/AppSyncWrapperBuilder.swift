@@ -28,7 +28,7 @@ public final class AppSyncWrapperBuilder {
     
     public init() {} 
     
-    public func getSender() throws -> GraphQLQuerySender {
+    public func getSender() throws -> GraphQLQuerySender & GraphQLMutationPerformer {
         return AppSyncWrapper(config: try getWrapperConfig())
     }
     
