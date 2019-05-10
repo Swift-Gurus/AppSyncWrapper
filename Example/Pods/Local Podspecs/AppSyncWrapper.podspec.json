@@ -1,19 +1,19 @@
 {
   "name": "AppSyncWrapper",
-  "version": "0.1.0",
-  "summary": "A short description of AppSyncWrapper.",
+  "version": "0.1.4",
+  "summary": "Easy AppSync API. Helps avoid boilerplate code.",
   "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/AlexHmelevski/AppSyncWrapper",
+  "homepage": "https://github.com/aldo-dev/AppSyncWrapper",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "AlexHmelevski": "alexei.hmelevski@gmail.com"
+    "ALDO inc.": "aldodev@aldogroup.com"
   },
   "source": {
-    "git": "https://github.com/AlexHmelevski/AppSyncWrapper.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/aldo-dev/AppSyncWrapper",
+    "tag": "0.1.4"
   },
   "platforms": {
     "ios": "11.0"
@@ -21,7 +21,7 @@
   "source_files": "AppSyncWrapper/Classes/**/*",
   "dependencies": {
     "AWSAppSync": [
-      "~> 2.6.24"
+
     ],
     "EitherResult": [
 
