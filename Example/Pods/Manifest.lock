@@ -2,12 +2,12 @@ PODS:
   - AppSyncWrapper (0.1.4):
     - AWSAppSync
     - EitherResult
-  - AWSAppSync (2.12.2):
+  - AWSAppSync (2.13.0):
     - AWSCore (~> 2.9.0)
     - ReachabilitySwift (= 4.3.0)
     - SQLite.swift (= 0.11.6)
   - AWSCore (2.9.8)
-  - EitherResult (0.1.4)
+  - EitherResult (0.1.5)
   - ReachabilitySwift (4.3.0)
   - SQLite.swift (0.11.6):
     - SQLite.swift/standard (= 0.11.6)
@@ -29,13 +29,13 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AppSyncWrapper: 519acc42578e4cb13a29569f2a6c3ab3e268406d
-  AWSAppSync: 0b5c81db1138faa85de8737a5bcdf77fa9add620
+  AppSyncWrapper: 1d08522fc3532a17f1449d9b54fdd519f460fb84
+  AWSAppSync: 06ac543d070163163eb3d1129f00f9a5d8d82ac5
   AWSCore: 5da86c5afde44a87b06a2df50601bca81a8cee13
-  EitherResult: cb173443600c601fbad74f5c78b8c2c35644a6af
+  EitherResult: 9a67a8cd25fa6d6f8ded0e7304ea2eb302bcbbc8
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
   SQLite.swift: 46d890be8601964454bd3392527f863d1b802d45
 
-PODFILE CHECKSUM: f9e2582e402325c7ef40d0e4f6381e6afb80a90e
+PODFILE CHECKSUM: e4ff38113a2f2a7a745b43da792260d561d125ee
 
 COCOAPODS: 1.6.1

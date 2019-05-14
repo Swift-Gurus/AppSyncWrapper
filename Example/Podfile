@@ -1,3 +1,6 @@
+source 'https://github.com/aldo-dev/mPodSpecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 use_frameworks!
 
 target 'AppSyncWrapper_Example' do
