@@ -1,6 +1,6 @@
 {
   "name": "AppSyncWrapper",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "summary": "Easy AppSync API. Helps avoid boilerplate code.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/aldo-dev/AppSyncWrapper",
@@ -13,12 +13,12 @@
   },
   "source": {
     "git": "https://github.com/aldo-dev/AppSyncWrapper",
-    "tag": "0.1.4"
+    "tag": "0.1.5"
   },
   "platforms": {
     "ios": "11.0"
   },
-  "swift_version": "5.0",
+  "swift_versions": "5.0",
   "source_files": "AppSyncWrapper/Classes/**/*",
   "dependencies": {
     "AWSAppSync": [
@@ -27,5 +27,6 @@
     "EitherResult": [
 
     ]
-  }
+  },
+  "swift_version": "5.0"
 }
