@@ -24,7 +24,7 @@ public class AppSyncWrapperRefresher: AppSyncSenderMutator {
     private let decorated: AppSyncSenderMutator
     private var tokenRefresher: TokenRefresher
 
-    init(decorated: AppSyncSenderMutator, tokenRefresher: TokenRefresher) {
+    public init(decorated: AppSyncSenderMutator, tokenRefresher: TokenRefresher) {
         self.decorated = decorated
         self.tokenRefresher = tokenRefresher
     }
