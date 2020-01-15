@@ -31,22 +31,20 @@ public enum AppSyncSenderType {
 public final class AppSyncWrapperBuilder {
     
     public var tokenReader: LatestTokenReader!
-    public var tokenRefresher: TokenRefresher!
+    public var tokenRefresher: TokenRefresher?
     public var region: AWSRegionType = .APNortheast1
     public var url: URL!
     public var headerInfos: [String:String] = [:]
     public var cachePolicy: CachePolicy = .fetchIgnoringCacheData
     public var processQueue: DispatchQueue = .main
     
-    public init() {} 
+    public init(refresher: TokenRefresher? = nil) {
+        self.tokenRefresher = refresher
+    }
     
-    public func getSender(type: AppSyncSenderType = .normal) throws -> GraphQLQuerySender & GraphQLMutationPerformer {
+    public func getSender() throws -> GraphQLQuerySender & GraphQLMutationPerformer {
         let sender = AppSyncWrapper(config: try getWrapperConfig())
-        switch type {
-        case .normal: return sender
-        case .tokenRefreshing: return AppSyncWrapperRefresher(decorated: sender,
-                                                              tokenRefresher: try getTokenRefresher())
-        }
+        return tokenRefresher.map({ AppSyncWrapperRefresher(decorated: sender, tokenRefresher: $0) }) ?? sender
     }
     
     private func getWrapperConfig() throws -> AppSyncWrapperConfig {
@@ -79,17 +77,11 @@ public final class AppSyncWrapperBuilder {
         return urlSessionConfiguration
     }
     
-    
     private func getLatestTokenReader() throws  -> LatestTokenReader {
         guard let reader = tokenReader else { throw AppSyncWrapperBuilderError.tokenReaderNotSet }
         return reader
     }
-    
-    private func getTokenRefresher() throws  -> TokenRefresher {
-        guard let refresher = tokenRefresher else { throw AppSyncWrapperBuilderError.tokenRefresherNotSet }
-        return refresher
-    }
-    
+        
     private func getURL() throws -> URL {
         guard let url = self.url else { throw AppSyncWrapperBuilderError.urlNotSet }
         return url

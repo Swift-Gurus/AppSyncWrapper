@@ -74,9 +74,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         builder.region = .APNortheast1
         builder.processQueue = .global()
         builder.tokenReader = TokenStorage()
-        builder.tokenRefresher = tokenRefresher
         do {
-            let sender = try builder.getSender(type: .tokenRefreshing)
+            let sender = try builder.getSender()
             sender.sendQuery(MyQuery()) { (result: ALResult<MyNetworkModel>) in
                 result.do(work: { (model) in
                     //process model
