@@ -10,6 +10,13 @@ import UIKit
 import AppSyncWrapper
 import AWSAppSync
 import EitherResult
+
+final class MyRefresher: TokenRefresher {
+    func refreshSessionForCurrentUser(completion: @escaping (ALResult<String>) -> Void) {
+        completion(.right("aToken123"))
+    }
+}
+
 final class TokenStorage: LatestTokenReader {
     var token = ""
     
@@ -56,7 +63,7 @@ enum QueryType {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let tokenRefresher: TokenRefresher = MyRefresher()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -69,8 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         builder.tokenReader = TokenStorage()
         do {
             let sender = try builder.getSender()
-            
-            sender.sendQuery(MyQuery()) { (result: ALResult<MyNetworkModel>) in
+            let senderRefresher = AppSyncWrapperRefresher(decorated: sender,
+                                                          tokenRefresher: tokenRefresher)
+            senderRefresher.sendQuery(MyQuery()) { (result: ALResult<MyNetworkModel>) in
                 result.do(work: { (model) in
                     //process model
                 })
