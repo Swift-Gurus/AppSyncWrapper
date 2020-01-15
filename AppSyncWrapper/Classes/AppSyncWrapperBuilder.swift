@@ -32,9 +32,7 @@ public final class AppSyncWrapperBuilder {
     public var cachePolicy: CachePolicy = .fetchIgnoringCacheData
     public var processQueue: DispatchQueue = .main
     
-    public init(refresher: TokenRefresher? = nil) {
-        self.tokenRefresher = refresher
-    }
+    public init() {}
     
     public func getSender() throws -> GraphQLQuerySender & GraphQLMutationPerformer {
         let sender = AppSyncWrapper(config: try getWrapperConfig())

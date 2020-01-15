@@ -27,14 +27,24 @@ enum AppSyncError: Error, Equatable {
     }
     
     private static func convertIntoTokenExpired(error: Error) -> AppSyncError? {
-        guard let _ = getAWSAuthError(error: error) else { return nil }
+        guard let resp = (error as? AWSAppSyncClientError)?.response,
+                let header = resp.allHeaderFields["x-amzn-errortype"] as? String,
+                resp.statusCode == 401, header == "UnauthorizedException" else {
+                    return nil
+        }
         return .tokenExpired
     }
-    
-    private static func getAWSAuthError(error: Error) -> Error? {
-        guard let awsError = error as? AWSAppSyncClientError else { return nil }
-        guard case let .authenticationError(unWrappedError) = awsError else { return nil }
-        return unWrappedError
+}
+
+extension AWSAppSyncClientError {
+    var response: HTTPURLResponse? {
+        switch self {
+        case .parseError(_, let response, _):
+            return response
+        case .requestFailed(_, let response, _):
+            return response
+        case .noData, .authenticationError: return nil
+        }
     }
 }
 
