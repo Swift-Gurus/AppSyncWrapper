@@ -7,9 +7,14 @@
 
 import Foundation
 import AWSAppSync
+import EitherResult
 
 public protocol LatestTokenReader {
     func getLatestToken() -> String
+}
+
+public protocol TokenRefresher {
+    func refreshSessionForCurrentUser(completion: @escaping (ALResult<String>) -> Void)
 }
 
 enum AppSyncWrapperBuilderError: LocalizedError {
@@ -20,16 +25,20 @@ enum AppSyncWrapperBuilderError: LocalizedError {
 public final class AppSyncWrapperBuilder {
     
     public var tokenReader: LatestTokenReader!
+    public var tokenRefresher: TokenRefresher?
     public var region: AWSRegionType = .APNortheast1
     public var url: URL!
     public var headerInfos: [String:String] = [:]
     public var cachePolicy: CachePolicy = .fetchIgnoringCacheData
     public var processQueue: DispatchQueue = .main
     
-    public init() {} 
+    public init(refresher: TokenRefresher? = nil) {
+        self.tokenRefresher = refresher
+    }
     
     public func getSender() throws -> GraphQLQuerySender & GraphQLMutationPerformer {
-        return AppSyncWrapper(config: try getWrapperConfig())
+        let sender = AppSyncWrapper(config: try getWrapperConfig())
+        return tokenRefresher.map({ AppSyncWrapperRefresher(decorated: sender, tokenRefresher: $0) }) ?? sender
     }
     
     private func getWrapperConfig() throws -> AppSyncWrapperConfig {
@@ -62,12 +71,11 @@ public final class AppSyncWrapperBuilder {
         return urlSessionConfiguration
     }
     
-    
     private func getLatestTokenReader() throws  -> LatestTokenReader {
         guard let reader = tokenReader else { throw AppSyncWrapperBuilderError.tokenReaderNotSet }
         return reader
     }
-    
+        
     private func getURL() throws -> URL {
         guard let url = self.url else { throw AppSyncWrapperBuilderError.urlNotSet }
         return url

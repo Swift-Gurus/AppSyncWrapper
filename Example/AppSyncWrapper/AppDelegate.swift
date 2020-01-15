@@ -76,9 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         builder.tokenReader = TokenStorage()
         do {
             let sender = try builder.getSender()
-            let senderRefresher = AppSyncWrapperRefresher(decorated: sender,
-                                                          tokenRefresher: tokenRefresher)
-            senderRefresher.sendQuery(MyQuery()) { (result: ALResult<MyNetworkModel>) in
+            sender.sendQuery(MyQuery()) { (result: ALResult<MyNetworkModel>) in
                 result.do(work: { (model) in
                     //process model
                 })

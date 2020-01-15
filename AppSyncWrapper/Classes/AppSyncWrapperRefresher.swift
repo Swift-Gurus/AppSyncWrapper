@@ -16,20 +16,16 @@ typealias Callback<T> = (ALResult<T>) -> Void
 public typealias AppSyncSenderMutator = GraphQLQuerySender &
                                         GraphQLMutationPerformer
 
-public protocol TokenRefresher {
-    func refreshSessionForCurrentUser(completion: @escaping (ALResult<String>) -> Void)
-}
-
-public class AppSyncWrapperRefresher: AppSyncSenderMutator {
+class AppSyncWrapperRefresher: AppSyncSenderMutator {
     private let decorated: AppSyncSenderMutator
     private var tokenRefresher: TokenRefresher
 
-    public init(decorated: AppSyncSenderMutator, tokenRefresher: TokenRefresher) {
+    init(decorated: AppSyncSenderMutator, tokenRefresher: TokenRefresher) {
         self.decorated = decorated
         self.tokenRefresher = tokenRefresher
     }
 
-    public func sendQuery<Q, T>(_ query: Q,
+    func sendQuery<Q, T>(_ query: Q,
                                 completion: @escaping (ALResult<T>) -> Void) where Q : GraphQLQuery,
                                                                                    T : GraphQLInitializable,
                                                                                    Q.Data == T.Set {
@@ -43,7 +39,7 @@ public class AppSyncWrapperRefresher: AppSyncSenderMutator {
                                  })
     }
     
-    public func performMutation<M, T>(_ mutation: M,
+    func performMutation<M, T>(_ mutation: M,
                                       completion: @escaping (ALResult<T>) -> Void) where M : GraphQLMutation,
                                                                                          T : GraphQLInitializable,
                                                                                          M.Data == T.Set {
