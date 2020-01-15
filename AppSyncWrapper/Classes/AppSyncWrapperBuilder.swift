@@ -20,7 +20,6 @@ public protocol TokenRefresher {
 enum AppSyncWrapperBuilderError: LocalizedError {
     case urlNotSet
     case tokenReaderNotSet
-    case tokenRefresherNotSet
 }
 
 public final class AppSyncWrapperBuilder {
