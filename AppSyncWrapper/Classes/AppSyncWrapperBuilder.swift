@@ -23,11 +23,6 @@ enum AppSyncWrapperBuilderError: LocalizedError {
     case tokenRefresherNotSet
 }
 
-public enum AppSyncSenderType {
-    case normal
-    case tokenRefreshing
-}
-
 public final class AppSyncWrapperBuilder {
     
     public var tokenReader: LatestTokenReader!
