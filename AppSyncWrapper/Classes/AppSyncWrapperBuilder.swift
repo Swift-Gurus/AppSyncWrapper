@@ -17,6 +17,10 @@ public protocol TokenRefresher {
     func refreshSessionForCurrentUser(completion: @escaping (ALResult<String>) -> Void)
 }
 
+public protocol TokenWriter {
+    func saveToken(_ string: String)
+}
+
 enum AppSyncWrapperBuilderError: LocalizedError {
     case urlNotSet
     case tokenReaderNotSet
@@ -26,6 +30,7 @@ public final class AppSyncWrapperBuilder {
     
     public var tokenReader: LatestTokenReader!
     public var tokenRefresher: TokenRefresher?
+    public var tokenWriter: TokenWriter?
     public var region: AWSRegionType = .APNortheast1
     public var url: URL!
     public var headerInfos: [String:String] = [:]
@@ -36,7 +41,13 @@ public final class AppSyncWrapperBuilder {
     
     public func getSender() throws -> GraphQLQuerySender & GraphQLMutationPerformer {
         let sender = AppSyncWrapper(config: try getWrapperConfig())
-        return tokenRefresher.map({ AppSyncWrapperRefresher(decorated: sender, tokenRefresher: $0) }) ?? sender
+        guard let refresher = tokenRefresher,
+                let writer = tokenWriter else {
+                    return sender
+                }
+        return AppSyncWrapperRefresher(decorated: sender,
+                                       tokenRefresher: refresher,
+                                       tokenWriter: writer)
     }
     
     private func getWrapperConfig() throws -> AppSyncWrapperConfig {

@@ -19,10 +19,14 @@ public typealias AppSyncSenderMutator = GraphQLQuerySender &
 class AppSyncWrapperRefresher: AppSyncSenderMutator {
     private let decorated: AppSyncSenderMutator
     private var tokenRefresher: TokenRefresher
+    private var tokenWriter: TokenWriter
 
-    init(decorated: AppSyncSenderMutator, tokenRefresher: TokenRefresher) {
+    init(decorated: AppSyncSenderMutator,
+         tokenRefresher: TokenRefresher,
+         tokenWriter: TokenWriter) {
         self.decorated = decorated
         self.tokenRefresher = tokenRefresher
+        self.tokenWriter = tokenWriter
     }
 
     func sendQuery<Q, T>(_ query: Q,
@@ -65,8 +69,13 @@ class AppSyncWrapperRefresher: AppSyncSenderMutator {
     private func sendRefreshTokenRequest(successCompletion: @escaping VoidClosure,
                                          errorCompletion  : @escaping Closure<Error>) {
         
+        let successClosure: Closure<String> = { [weak self] (token) in
+            self?.tokenWriter.saveToken(token)
+            successCompletion()
+        }
+        
         self.tokenRefresher.refreshSessionForCurrentUser(completion: { result in
-            result.do(work: { _ in successCompletion() })
+            result.do(work: successClosure)
                   .onError(errorCompletion)
         })
     }

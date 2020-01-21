@@ -17,13 +17,17 @@ final class MyRefresher: TokenRefresher {
     }
 }
 
+final class MyWriter: TokenWriter {
+    func saveToken(_ string: String) {
+        print("Saving token: \(string)")
+    }
+}
+
 final class TokenStorage: LatestTokenReader {
     var token = ""
-    
     func getLatestToken() -> String {
         return token
     }
-    
 }
 
 final class MyQuery: GraphQLQuery {
@@ -75,6 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         builder.processQueue = .global()
         builder.tokenReader = TokenStorage()
         builder.tokenRefresher = tokenRefresher
+        builder.tokenWriter = MyWriter()
         do {
             let sender = try builder.getSender()
             sender.sendQuery(MyQuery()) { (result: ALResult<MyNetworkModel>) in
