@@ -19,11 +19,11 @@ public typealias AppSyncSenderMutator = GraphQLQuerySender &
 class AppSyncWrapperRefresher: AppSyncSenderMutator {
     private let decorated: AppSyncSenderMutator
     private var tokenRefresher: TokenRefresher
-    private var tokenWriter: TokenWriter
+    private var tokenWriter: LatestTokenWriter
 
     init(decorated: AppSyncSenderMutator,
          tokenRefresher: TokenRefresher,
-         tokenWriter: TokenWriter) {
+         tokenWriter: LatestTokenWriter) {
         self.decorated = decorated
         self.tokenRefresher = tokenRefresher
         self.tokenWriter = tokenWriter

@@ -13,12 +13,12 @@ public protocol LatestTokenReader {
     func getLatestToken() -> String
 }
 
-public protocol TokenRefresher {
-    func refreshSessionForCurrentUser(completion: @escaping (ALResult<String>) -> Void)
+public protocol LatestTokenWriter {
+    func saveToken(_ string: String)
 }
 
-public protocol TokenWriter {
-    func saveToken(_ string: String)
+public protocol TokenRefresher {
+    func refreshSessionForCurrentUser(completion: @escaping (ALResult<String>) -> Void)
 }
 
 enum AppSyncWrapperBuilderError: LocalizedError {
@@ -30,7 +30,7 @@ public final class AppSyncWrapperBuilder {
     
     public var tokenReader: LatestTokenReader!
     public var tokenRefresher: TokenRefresher?
-    public var tokenWriter: TokenWriter?
+    public var tokenWriter: LatestTokenWriter?
     public var region: AWSRegionType = .APNortheast1
     public var url: URL!
     public var headerInfos: [String:String] = [:]

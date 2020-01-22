@@ -17,7 +17,7 @@ final class MyRefresher: TokenRefresher {
     }
 }
 
-final class MyWriter: TokenWriter {
+final class MyWriter: LatestTokenWriter {
     func saveToken(_ string: String) {
         print("Saving token: \(string)")
     }
