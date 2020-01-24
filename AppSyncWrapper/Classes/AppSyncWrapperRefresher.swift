@@ -20,6 +20,7 @@ class AppSyncWrapperRefresher: AppSyncSenderMutator {
     private let decorated: AppSyncSenderMutator
     private var tokenRefresher: TokenRefresher
     private var tokenWriter: LatestTokenWriter
+    private let maxNumberOfRetries = 10
 
     init(decorated: AppSyncSenderMutator,
          tokenRefresher: TokenRefresher,
@@ -29,11 +30,19 @@ class AppSyncWrapperRefresher: AppSyncSenderMutator {
         self.tokenWriter = tokenWriter
     }
 
-    func sendQuery<Q, T>(_ query: Q,
-                                completion: @escaping (ALResult<T>) -> Void) where Q : GraphQLQuery,
-                                                                                   T : GraphQLInitializable,
-                                                                                   Q.Data == T.Set {
-        let proccessErrorClosure = getErrorHandler(using: { [weak self] in self?.sendQuery(query, completion: completion) },
+    func sendQuery<Q, T>(_ query: Q, completion: @escaping (ALResult<T>) -> Void)
+                        where Q: GraphQLQuery, T: GraphQLInitializable, Q.Data == T.Set {
+        self.sendQuery(query, count: maxNumberOfRetries, completion: completion)
+    }
+    
+    func sendQuery<Q, T>(_ query: Q, count: Int, completion: @escaping (ALResult<T>) -> Void)
+                        where Q : GraphQLQuery, T : GraphQLInitializable, Q.Data == T.Set {
+        
+        guard count > 0 else { completion(.wrong(AppSyncError.tooManyRetries)); return }
+        
+        let proccessErrorClosure = getErrorHandler(using: { [weak self] in self?.sendQuery(query,
+                                                                                           count: count-1,
+                                                                                           completion: completion) },
                                                    errorCompletion: completion)
         
         self.decorated.sendQuery(query,
@@ -43,11 +52,19 @@ class AppSyncWrapperRefresher: AppSyncSenderMutator {
                                  })
     }
     
-    func performMutation<M, T>(_ mutation: M,
-                                      completion: @escaping (ALResult<T>) -> Void) where M : GraphQLMutation,
-                                                                                         T : GraphQLInitializable,
-                                                                                         M.Data == T.Set {
-        let proccessErrorClosure = getErrorHandler(using: { [weak self] in self?.performMutation(mutation, completion: completion) },
+    func performMutation<M, T>(_ mutation: M, completion: @escaping (ALResult<T>) -> Void)
+                              where M : GraphQLMutation, T : GraphQLInitializable, M.Data == T.Set {
+        self.performMutation(mutation, count: maxNumberOfRetries, completion: completion)
+    }
+    
+    func performMutation<M, T>(_ mutation: M, count: Int, completion: @escaping (ALResult<T>) -> Void)
+    where M : GraphQLMutation, T : GraphQLInitializable, M.Data == T.Set {
+        
+        guard count > 0 else { completion(.wrong(AppSyncError.tooManyRetries)); return }
+        
+        let proccessErrorClosure = getErrorHandler(using: { [weak self] in self?.performMutation(mutation,
+                                                                                                 count: count-1,
+                                                                                                 completion: completion) },
                                                    errorCompletion: completion)
         
         self.decorated.performMutation(mutation,

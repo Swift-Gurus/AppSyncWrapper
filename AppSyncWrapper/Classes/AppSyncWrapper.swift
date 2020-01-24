@@ -29,12 +29,19 @@ public protocol GraphQLMutationPerformer {
     func performMutation<M: GraphQLMutation, T: GraphQLInitializable>(_ mutation: M, completion: @escaping (ALResult<T>) -> Void) where M.Data == T.Set
 }
 
-final class AppSyncWrapper: GraphQLQuerySender, GraphQLMutationPerformer {
+public class AppSyncWrapper: GraphQLQuerySender, GraphQLMutationPerformer {
     
     let cachePolicy: CachePolicy
-    let appsyncClient: AWSAppSyncClient
+    let appsyncClient: AWSAppSyncClient!
     let processQueue: DispatchQueue
     let resultConverter: ResultConverter
+    
+    init() {
+        self.cachePolicy = .fetchIgnoringCacheData
+        self.processQueue = .main
+        self.resultConverter = GraphQLResultConverter()
+        self.appsyncClient = nil
+    }
     
     init(config: AppSyncWrapperConfig) {
         self.cachePolicy = config.cachePolicy
@@ -43,7 +50,7 @@ final class AppSyncWrapper: GraphQLQuerySender, GraphQLMutationPerformer {
         self.appsyncClient = config.appsyncClient
     }
     
-    func sendQuery<Q: GraphQLQuery, T: GraphQLInitializable>(_ query: Q, completion: @escaping (ALResult<T>) -> Void) where Q.Data == T.Set {
+    public func sendQuery<Q: GraphQLQuery, T: GraphQLInitializable>(_ query: Q, completion: @escaping (ALResult<T>) -> Void) where Q.Data == T.Set {
         appsyncClient.fetch(query: query,
                             cachePolicy: cachePolicy,
                             queue: processQueue) {[weak self] (response, error) in
@@ -54,7 +61,7 @@ final class AppSyncWrapper: GraphQLQuerySender, GraphQLMutationPerformer {
         }
     }
     
-    func performMutation<M, T>(_ mutation: M, completion: @escaping (ALResult<T>) -> Void) where M : GraphQLMutation, T : GraphQLInitializable, M.Data == T.Set {
+    public func performMutation<M, T>(_ mutation: M, completion: @escaping (ALResult<T>) -> Void) where M : GraphQLMutation, T : GraphQLInitializable, M.Data == T.Set {
         appsyncClient.perform(mutation: mutation,
                               queue: processQueue,
                               optimisticUpdate: nil,
