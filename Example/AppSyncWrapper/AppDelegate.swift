@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
       
         let builder = AppSyncWrapperBuilder()
-        builder.url = URL.init(string: "Put your url here")!
+        builder.url = URL.init(string: "https://www.google.com")!
         builder.region = .APNortheast1
         builder.processQueue = .global()
         builder.tokenReader = TokenStorage()

@@ -31,6 +31,7 @@ public final class AppSyncWrapperBuilder {
     public var tokenReader: LatestTokenReader!
     public var tokenRefresher: TokenRefresher?
     public var tokenWriter: LatestTokenWriter?
+    public var appSyncWrapperMock: AppSyncWrapper?
     public var region: AWSRegionType = .APNortheast1
     public var url: URL!
     public var headerInfos: [String:String] = [:]
@@ -40,7 +41,7 @@ public final class AppSyncWrapperBuilder {
     public init() {}
     
     public func getSender() throws -> GraphQLQuerySender & GraphQLMutationPerformer {
-        let sender = AppSyncWrapper(config: try getWrapperConfig())
+        let sender = try appSyncWrapperMock ?? AppSyncWrapper(config: try getWrapperConfig())
         guard let refresher = tokenRefresher,
                 let writer = tokenWriter else {
                     return sender

@@ -15,6 +15,7 @@ enum AppSyncError: Error, Equatable {
     case subscriptionFailed
     case tokenExpired
     case refreshTokenNotSet
+    case tooManyRetries
     case unknown
     
     init(error: Error) {

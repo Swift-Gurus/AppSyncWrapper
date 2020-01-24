@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		339F9B4823D9F2B100B299B8 /* AppSyncWrapperRefresherDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339F9B4723D9F2B100B299B8 /* AppSyncWrapperRefresherDecoratorTests.swift */; };
 		5C316B2297F4A2812B2359E4 /* Pods_AppSyncWrapper_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88603B46F92793D0CE5039D9 /* Pods_AppSyncWrapper_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -29,6 +30,8 @@
 /* Begin PBXFileReference section */
 		1502C3C7C03E85E06885522D /* Pods-AppSyncWrapper_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppSyncWrapper_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AppSyncWrapper_Tests/Pods-AppSyncWrapper_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		22BD05CFFDBABAEDF9D35A55 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		339F9B4423D9F24200B299B8 /* AppSyncWrapper_Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppSyncWrapper_Tests-Bridging-Header.h"; sourceTree = "<group>"; };
+		339F9B4723D9F2B100B299B8 /* AppSyncWrapperRefresherDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSyncWrapperRefresherDecoratorTests.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* AppSyncWrapper_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppSyncWrapper_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +117,8 @@
 			isa = PBXGroup;
 			children = (
 				607FACE91AFB9204008FA782 /* Supporting Files */,
+				339F9B4423D9F24200B299B8 /* AppSyncWrapper_Tests-Bridging-Header.h */,
+				339F9B4723D9F2B100B299B8 /* AppSyncWrapperRefresherDecoratorTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -213,7 +218,7 @@
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1130;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
@@ -347,6 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				339F9B4823D9F2B100B299B8 /* AppSyncWrapperRefresherDecoratorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +434,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -477,7 +483,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -519,6 +525,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C372203E0183B3E07B3A05E7 /* Pods-AppSyncWrapper_Tests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -528,9 +535,12 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/AppSyncWrapper_Tests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppSyncWrapper_Example.app/AppSyncWrapper_Example";
@@ -541,14 +551,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1502C3C7C03E85E06885522D /* Pods-AppSyncWrapper_Tests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/AppSyncWrapper_Tests-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppSyncWrapper_Example.app/AppSyncWrapper_Example";
